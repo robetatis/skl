@@ -1,23 +1,50 @@
 import csv
 import random
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.linear_model import Perceptron
 from sklearn.neighbors import KNeighborsClassifier
+
+
+# import data
+dateparser = lambda x: pd.to_datetime(x, format='%Y%m%d%H')
+press = pd.read_csv('press.txt', delimiter=';', usecols=[1, 4], names=['dateTime', 'pressure'], 
+                    skiprows=1, parse_dates=['dateTime'], date_parser=dateparser, index_col='dateTime')
+temp = pd.read_csv('temp.txt', delimiter=';', usecols=[1, 4, 5], names=['dateTime', 'temperature', 'relative_humidity'], 
+                    skiprows=1, parse_dates=['dateTime'], date_parser=dateparser, index_col='dateTime')
+rain = pd.read_csv('rain.txt', delimiter=';', usecols=[1, 4], names=['dateTime', 'rain'], 
+                    skiprows=1, parse_dates=['dateTime'], date_parser=dateparser, index_col='dateTime')
+
+df = rain
+df['atmpress'] = press['pressure']
+df['airtemp'] = temp['temperature']
+df['relhum'] = temp['relative_humidity']
+
+# clean data
+df = df[df != -999]
+
+
+plt.plot(df)
+plt.show()
+
+
+# plot hourly variables
+
+
+# aggregate to daily values using different statistics (max, median, mean)
+
+
+
+# build classification model
 
 # perceptron learning rule: w = w + alpha(y - hw(x))*x,
 # with hw(x) = w0 + w1*x2 + w2*x2 >= 0 -> y = 1
 #                                 < 0  -> y = 0
 
 
-# use atmospheric pressure and temperature to predict whether it rains or not
-
-# use MySQM to put hourly data from dwd climate data center into database
-# connect and grab data
-# classify with linear perceptron
-# classify with k-neighbors
-
-
 model = Perceptron()
-model = KNeighborsClassifier(n_neighbors=1)
+#model = KNeighborsClassifier(n_neighbors=1)
 
 with open("banknotes.csv") as f:
     reader = csv.reader(f)
