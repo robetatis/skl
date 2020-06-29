@@ -22,7 +22,7 @@ df['atmpress'] = press['pressure']
 df['airtemp'] = temp['temperature']
 df['relhum'] = temp['relative_humidity']
 
-# remove no data (labeled as -999)
+# remove no data (labeled as -999) and na's
 df = df[df != -999]
 df = df.dropna()
 
